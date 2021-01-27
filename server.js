@@ -9,9 +9,23 @@ app.use((req, res, next) => {
     next();
 });
 
+//route for every pokemon
 app.get('/pokemon', function(req, res) {
-    console.log(pokemon);
-    res.render('show.ejs', {pokemon: pokemon});
+    // console.log(pokemon);
+    res.send(pokemon);
+});   
+
+//route for individual pokemon
+app.get('/pokemon/:id', function(req, res) {
+    let index = req.params.id;
+    // console.log(index);
+    res.send(pokemon[index]);
+});
+
+//index
+app.get('/pokemon', function(req, res) {
+
+    res.render('index.ejs', {pokemon: pokemon});
 });   
 
 app.listen(3000, () => {
