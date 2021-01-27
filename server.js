@@ -3,22 +3,24 @@ const app = express();
 
 const pokemon = require("./models/pokemon.js");
 
-//middleware
+//middleware start
 app.use((req, res, next) => {
     console.log('I run for all routes');
     next();
 });
+app.use('/pokemon', require('./controllers/pokemon'));
+//middleware end
 
 //index
-app.get('/pokemon', function(req, res) {
-    res.render('index.ejs', {pokemon: pokemon});
-});   
+// app.get('/pokemon', function(req, res) {
+//     res.render('index.ejs', {pokemon: pokemon});
+// });   
 
 //route for every pokemon
-app.get('/pokemon', function(req, res) {
-    // console.log(pokemon);
-    res.send(pokemon);
-});   
+// app.get('/pokemon', function(req, res) {
+//     // console.log(pokemon);
+//     res.send(pokemon);
+// });   
 
 //route for individual pokemon
 app.get('/pokemon/:id', function(req, res) {
