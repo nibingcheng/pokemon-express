@@ -17,17 +17,17 @@ app.use('/pokemon', require('./controllers/pokemon'));
 // });   
 
 //route for every pokemon
-// app.get('/pokemon', function(req, res) {
-//     // console.log(pokemon);
-//     res.send(pokemon);
-// });   
+app.get('/pokemon', function(req, res) {
+    // console.log(pokemon);
+    res.send(pokemon);
+});   
 
 //route for individual pokemon
-app.get('/pokemon/:id', function(req, res) {
-    let index = req.params.id;
-    // res.send(pokemon[index]);
-    res.render('show.ejs', {pokemon: pokemon[index]})
-});
+// app.get('/pokemon/:id', function(req, res) {
+//     let index = req.params.id;
+//     // res.send(pokemon[index]);
+//     res.render('show.ejs', {pokemon: pokemon[index]})
+// });
 
 
 app.listen(3000, () => {

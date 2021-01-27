@@ -7,5 +7,12 @@ router.get('/', function(req, res) {
     res.render('index.ejs', {pokemon: pokemon});
 });   
 
+//show
+router.get('/:id', function(req, res) {
+    let index = req.params.id;
+    // res.send(pokemon[index]);
+    res.render('show.ejs', {pokemon: pokemon[index]})
+});
+
 
 module.exports = router;
