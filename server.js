@@ -23,8 +23,8 @@ app.get('/pokemon', function(req, res) {
 //route for individual pokemon
 app.get('/pokemon/:id', function(req, res) {
     let index = req.params.id;
-    // console.log(index);
-    res.send(pokemon[index]);
+    // res.send(pokemon[index]);
+    res.render('show.ejs', {pokemon: pokemon[index]})
 });
 
 
