@@ -8,7 +8,7 @@ app.use((req, res, next) => {
     console.log('I run for all routes');
     next();
 });
-app.use('/pokemon', require('./controllers/pokemon'));
+app.use('/pokemon', require('./controllers/pokemonController'));
 //middleware end
 
 //index
