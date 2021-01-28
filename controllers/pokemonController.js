@@ -10,7 +10,6 @@ router.get('/', function(req, res) {
 //show
 router.get('/:id', function(req, res) {
     let index = req.params.id;
-    // res.send(pokemon[index]);
     res.render('show.ejs', {pokemon: pokemon[index]})
 });
 

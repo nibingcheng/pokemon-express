@@ -8,6 +8,7 @@ app.use((req, res, next) => {
     console.log('I run for all routes');
     next();
 });
+app.use(express.static('public'));
 app.use('/pokemon', require('./controllers/pokemonController'));
 //middleware end
 
