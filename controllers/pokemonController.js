@@ -38,7 +38,10 @@ router.put('/:index', (req, res) => {
 //show
 router.get('/:id', function(req, res) {
     let index = req.params.id;
-    res.render('show.ejs', {pokemon: pokemon[index]})
+    res.render('show.ejs', {
+        pokemon: pokemon[index],
+        index: index
+    })
 });
 
 //delete
