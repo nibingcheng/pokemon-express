@@ -17,7 +17,7 @@ router.get('/login', (req,res) => {
 
 router.post('/login', (req, res)=>{
     let thisUser = users.findIndex((user)=>
-    user.username == req.body.username && user.password == req.body.password
+    user.username === req.body.username && user.password === req.body.password
     )
     res.redirect('/users/profile/'+thisUser)
 })
@@ -25,8 +25,8 @@ router.post('/login', (req, res)=>{
 router.post("/profile", (req,res)=>{
     
     users.push(req.body);
-    console.log(req.body);
-    console.log(users);
+    // console.log(req.body);
+    // console.log(users);
     let userIndex = users.length - 1;
     res.redirect(`profile/${userIndex}`);
 })
@@ -47,7 +47,7 @@ router.put('/profile/:index', (req, res) => {
 
 router.delete('/:index', (req, res)=>{
     users.splice(req.params.index, 1);
-    console.log(users);
+    // console.log(users);
     res.redirect('/users');
 })
 

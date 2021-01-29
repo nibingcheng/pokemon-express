@@ -20,7 +20,7 @@ router.post("/", (req,res)=>{
 
 //Edit
 router.get('/:index/edit', (req, res)=> {
-    console.log(pokemon[req.params.index]);
+    // console.log(pokemon[req.params.index]);
 	res.render(
 		'edit.ejs', //render views/edit.ejs
 		{ //pass in an object that contains
