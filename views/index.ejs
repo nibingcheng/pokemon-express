@@ -8,14 +8,17 @@
     <body>
         <h1>Pokemon show page</h1>
         <ul class='pokemon'>
-            <% for (let i=0; i<pokemon.length; i++) { %>
-                <!-- <li><%= pokemon[i].name %> <img src="<%= pokemon[i].img %>" alt="pic"></li> -->
-                <!-- <li><a href="<%= pokemon[i].img %>"><%= pokemon[i].name %></a></li> -->
+            <% for (let i=0; i<pokemon.length; i++) { %>          
                 <li>
                     <a href="/pokemon/<%= i; %>"><%= pokemon[i].name %>.....</a>
                     <button><a href="<%= pokemon[i].img %>">img</a></button>
+                    <form action='/pokemon/<%= i; %>?_method=DELETE' method='POST'>
+                        <input type='submit' value="delete"/>
+                    </form>
+                    <a href="/pokemon/<%= i; %>/edit">Edit</a>
                 </li>
             <% } %>
         </ul>
+        <a href="/pokemon/new">Create a new pokemon</a>
     </body>
 </html>    
