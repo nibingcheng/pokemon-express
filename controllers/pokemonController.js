@@ -41,5 +41,10 @@ router.get('/:id', function(req, res) {
     res.render('show.ejs', {pokemon: pokemon[index]})
 });
 
+//delete
+router.delete('/:index', (req, res)=>{
+    pokemon.splice(req.params.index, 1);
+    res.redirect('/');
+})
 
 module.exports = router;

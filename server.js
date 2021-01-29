@@ -8,6 +8,7 @@ app.use(express.urlencoded({extended:true}));
 
 app.use(express.static('public'));
 app.use('/pokemon', require('./controllers/pokemonController'));
+app.use('/users', require('./controllers/usersController'));
 //middleware end
 
 
