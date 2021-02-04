@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const pokemon = require("../models/pokemon.js");
+
+const pokemon = require("../pokemon.js");  /* pokemonArray */
+// const pokemon = require("../models").Pokemon;
 
 //index
 router.get('/', function(req, res) {
@@ -11,7 +13,7 @@ router.get('/', function(req, res) {
 router.get('/new', (req,res) => {
     res.render('new.ejs');
 })
-//POST pokemon
+//POST i.e. create 
 router.post("/", (req,res)=>{
     pokemon.push(req.body);
     // console.log(req.body);
@@ -29,7 +31,7 @@ router.get('/:index/edit', (req, res)=> {
 		}
 	);
 });
-//PUT
+//PUT i.e. update
 router.put('/:index', (req, res) => { 
     pokemon[req.params.index] = req.body; 
 	res.redirect('/'); 
