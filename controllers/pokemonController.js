@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-const pokemon = require("../pokemon.js");  /* pokemonArray */
-// const pokemon = require("../models").Pokemon;
+// const pokemon = require("../pokemon.js");  
+const pokemon = require("../models").Pokemon;
 
 //index
 router.get('/', function(req, res) {
-    res.render('index.ejs', {pokemon: pokemon});
+    pokemon.findAll().then((pokemon) => {
+        res.render('index.ejs', {
+            pokemon: pokemon
+        });
+    })
 });   
 
 //New
@@ -39,17 +43,20 @@ router.put('/:index', (req, res) => {
 
 //show
 router.get('/:id', function(req, res) {
-    let index = req.params.id;
-    res.render('show.ejs', {
-        pokemon: pokemon[index],
-        index: index
-    })
+    let id = req.params.id;
+    pokemon.findByPk(id).then((pokemon) => {
+        res.render('show.ejs', {
+            pokemon: pokemon,
+        })
+    });
 });
 
 //delete
-router.delete('/:index', (req, res)=>{
-    pokemon.splice(req.params.index, 1);
-    res.redirect('/');
-})
+router.delete("/:id", (req, res) => {
+    pokemon.destroy({ where: { id: req.params.id } }).then(() => {
+      res.redirect("/pokemon");
+    });
+});
+
 
 module.exports = router;
