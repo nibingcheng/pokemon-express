@@ -19,26 +19,28 @@ router.get('/new', (req,res) => {
 })
 //POST i.e. create 
 router.post("/", (req,res)=>{
-    pokemon.push(req.body);
-    // console.log(req.body);
-    res.redirect('/pokemon');
+    pokemon.create(req.body).then((newPokemon) => {
+        res.redirect('/pokemon');
+    })
 })
 
 //Edit
-router.get('/:index/edit', (req, res)=> {
-    // console.log(pokemon[req.params.index]);
-	res.render(
-		'edit.ejs', //render views/edit.ejs
-		{ //pass in an object that contains
-			pokemon: pokemon[req.params.index], 
-			index: req.params.index 
-		}
-	);
-});
+router.get('/:id/edit', (req, res)=> {
+    pokemon.findByPk(req.params.id).then((pokemon) => {
+	    res.render('edit.ejs', { 
+			pokemon: pokemon,  
+		});
+    });
+})
+
 //PUT i.e. update
-router.put('/:index', (req, res) => { 
-    pokemon[req.params.index] = req.body; 
-	res.redirect('/'); 
+router.put('/:id', (req, res) => { 
+    pokemon.update(req.body, {
+        where: { id: req.params.id },
+        returning: true,
+    }).then((pokemon) => {
+        res.redirect("/pokemon");
+    });
 });
 
 //show
