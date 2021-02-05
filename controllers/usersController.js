@@ -28,10 +28,18 @@ router.get('/login', (req,res) => {
 })
 
 router.post('/login', (req, res)=>{
-    let thisUser = users.findIndex((user)=>
-    user.username === req.body.username && user.password === req.body.password
-    )
-    res.redirect('/users/profile/'+thisUser)
+    // let thisUser = users.findIndex((user)=>
+    // user.username === req.body.username && user.password === req.body.password
+    // )
+    // res.redirect('/users/profile/'+thisUser)
+    users.findOne({    
+        where: {
+        username: req.body.username, 
+        password: req.body.password
+        }        
+    }).then((thisUser) => {           
+        res.redirect('/users/profile/'+thisUser.id);
+    });
 })
 
 // Edit
