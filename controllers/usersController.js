@@ -12,14 +12,25 @@ router.get('/', (req, res) => {
 })
 //Signup
 router.get('/signup', (req,res) => {
-    res.render('users/signup.ejs');
+    // res.render('users/signup.ejs');
+    Team.findAll().then((allTeams) => {
+        res.render('users/signup.ejs', {     
+            teams: allTeams,
+        })
+    }) 
 })
 
 router.post("/profile", (req,res)=>{
     // users.push(req.body);
     // let userIndex = users.length - 1;
     // res.redirect(`profile/${userIndex}`);
-    users.create(req.body).then((thisUser)=>{
+    const newUserInfo = {
+        name: req.body.name,
+        username: req.body.username,
+        password: req.body.password,
+        teamId: req.body.team
+    };
+    users.create(newUserInfo).then((thisUser)=>{
         res.redirect('/users/profile/'+thisUser.id);
     })
 })
@@ -52,7 +63,7 @@ router.get('/profile/:index', (req, res)=> {
     // });
     users.findByPk(req.params.index, {
         include: [{ model: Team}, {model: Pokemon}],
-    }).then((userInfo)=> {
+    }).then((userInfo)=> {        
         Team.findAll().then((allTeams) => {
             res.render('users/profile.ejs', {
                 userInfo: userInfo, 
@@ -64,9 +75,22 @@ router.get('/profile/:index', (req, res)=> {
 });
 
 router.put('/profile/:index', (req, res) => { 
-    users[req.params.index] = req.body;
-    let index = req.params.index;
-	res.redirect('/users/profile/'+index); 
+    // console.log('hello!', req.body, req.params.index);
+    // users[req.params.index] = req.body;
+    // let index = req.params.index;
+	// res.redirect('/users/profile/'+index);
+    const userNewInfo = {
+        name: req.body.name,
+        username: req.body.username,
+        password: req.body.password,
+        teamId: req.body.team
+    };
+    users.update(userNewInfo, {
+        where: {id: req.params.index },
+        // returnin: true
+    }).then((thisUser) => {
+        res.redirect('/users/profile/'+req.params.index);
+    }); 
 });
 
 // Delete
