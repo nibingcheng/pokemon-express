@@ -3,6 +3,8 @@ const router = express.Router();
 
 // const users = require("../users");
 const users = require('../models').User;
+const Team = require('../models').Team;
+const Pokemon = require('../models').Pokemon;
 
 //Index 
 router.get('/', (req, res) => {
@@ -48,10 +50,15 @@ router.get('/profile/:index', (req, res)=> {
     //     userInfo: users[req.params.index], 
     //     index: req.params.index 
     // });
-    users.findByPk(req.params.index).then((userInfo)=> {
-        res.render('users/profile.ejs', {
-            userInfo: userInfo, 
-            index: req.params.index
+    users.findByPk(req.params.index, {
+        include: [{ model: Team}, {model: Pokemon}],
+    }).then((userInfo)=> {
+        Team.findAll().then((allTeams) => {
+            res.render('users/profile.ejs', {
+                userInfo: userInfo, 
+                // index: req.params.index,
+                teams: allTeams,
+            })
         }) 
     })
 });
