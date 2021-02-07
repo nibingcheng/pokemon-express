@@ -24,13 +24,8 @@ router.post("/profile", (req,res)=>{
     // users.push(req.body);
     // let userIndex = users.length - 1;
     // res.redirect(`profile/${userIndex}`);
-    const newUserInfo = {
-        name: req.body.name,
-        username: req.body.username,
-        password: req.body.password,
-        teamId: req.body.team
-    };
-    users.create(newUserInfo).then((thisUser)=>{
+    
+    users.create(req.body).then((thisUser)=>{
         res.redirect('/users/profile/'+thisUser.id);
     })
 })
@@ -67,7 +62,6 @@ router.get('/profile/:index', (req, res)=> {
         Team.findAll().then((allTeams) => {
             res.render('users/profile.ejs', {
                 userInfo: userInfo, 
-                // index: req.params.index,
                 teams: allTeams,
             })
         }) 
@@ -79,13 +73,8 @@ router.put('/profile/:index', (req, res) => {
     // users[req.params.index] = req.body;
     // let index = req.params.index;
 	// res.redirect('/users/profile/'+index);
-    const userNewInfo = {
-        name: req.body.name,
-        username: req.body.username,
-        password: req.body.password,
-        teamId: req.body.team
-    };
-    users.update(userNewInfo, {
+    
+    users.update(req.body, {
         where: {id: req.params.index },
         // returnin: true
     }).then((thisUser) => {

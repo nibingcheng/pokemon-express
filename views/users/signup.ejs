@@ -14,7 +14,7 @@
         Username: <input type="text" name='username'><br/>
         Password: <input type="text" name='password'><br/>
         Team: 
-        <select name="team">
+        <select name="teamId">
             <% for ( let i = 0; i < teams.length; i++ ) { let selected = ( i == 0
                 ) ? "selected" : ""; %>
                 <option value="<%=teams[i].id%>" selected>
