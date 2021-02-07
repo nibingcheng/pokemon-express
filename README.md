@@ -67,7 +67,7 @@ const pokemon = [
 
 <hr>
 &#x1F534; The commit message should read: <br>
-"Commit 2 - Connected my database, can see json in the browser"
+"Commit 2 - Connected my database"
 <hr>
 
 ### Create GET Routes
@@ -299,6 +299,11 @@ So far you have the app with the static data but you don't have a database yet t
   - [Pseudo selector sibling status and `not()`](https://www.youtube.com/watch?v=XyXUjEP9m-8&list=PLdnONIhPScST0Vy4LrIZiYKpFNoxgyH7J&index=20) ~ 5 minutes
   - Connect Four in pure CSS, [see just how deeply nerdy some people get about CSS](https://css-tricks.com/roman-empire-made-pure-css-connect-4-possible/)
 
+<details>
+<summary> solution code </summary>
+[Sequelize 6 Refactored Solution - Check the branches for the specific day’s solution](https://git.generalassemb.ly/marcwright-rem/pokemon-express-sequelize6)
+</details>
+
 ## Day 6
 
 Today you will work on building associations between different models. So far you have a `Pokemon` and `Player` model. 
@@ -339,7 +344,21 @@ Let's create a new model `Team` first. The only field `Team` will have is `name`
 	```
 3. Run the migrations `npx sequelize db:migrate`
 4. Generate database seed file for `Team`, `npx sequelize seed:generate --name demo-team`
-5. Fill the created empty seeders file by adding `bulkInsert` on objects.
+5. Fill the created empty seeders file by adding `bulkInsert` with the following teams names.
+
+```js
+[
+	{
+	  name: "Blizzards",
+	},
+	{
+	  name: "Earthquakes",
+	},
+	{
+	  name: "Rookies",
+	}
+]
+```
 6. Seed the database table by running `npx sequelize db:seed --seed <xxxxxxxxx-demo-team.js>`
 7. Confirm in psql,
 
@@ -419,11 +438,13 @@ Now that `Team` model has been created we can go ahead and add `teamId` column t
 	};
 	```
 	
-6. Once the above changes our made, the easiest thing for us to do is drop our tables, re-migrate and re-seed. This will ensure that the teamIds will match the players in the database. You can try this:
+6. Once the above changes are made, the easiest thing for us to do so this changes reflects on the database is:
 
-	- Delete the tables from the database in pgAdmin
-	- Run `npx sequelize db:migrate` then `npx sequelize db:seed:all`
+	1. drop our tables **`npx sequelize db:migrate:undo:all`**
+	1. re-migrate **`npx sequelize db:migrate`**
+	1. re-seed **`npx sequelize db:seed:all`**
 
+This will ensure that the teamIds will match the players in the database.
 
 ### hasMany Association
 
@@ -533,10 +554,10 @@ Each `Player` can catch multiple pokemons and each `Pokemon` can be caught by mu
 
 	```js
 	router.get("/profile/:id", (req, res) => {
-	  PlayerModel.findByPk(req.params.id, {
-	    include: [{ model: TeamModel }, { model: PokemonModel }],
+	  Player.findByPk(req.params.id, {
+	    include: [{ model: Team }, { model: Pokemon }],
 	  }).then((singlePlayer) => {
-	    TeamModel.findAll().then((allTeams) => {
+	    Team.findAll().then((allTeams) => {
 	      console.log(singlePlayer);
 	      res.render("player/profile.ejs", {
 		player: singlePlayer,
@@ -604,25 +625,31 @@ Each `Player` can catch multiple pokemons and each `Pokemon` can be caught by mu
 	  </body>
 	</html>
 	```
-1. 
-
-![](https://i.imgur.com/WJbRHAs.png)
 
 
-<!--## Day 5
-
-## Hungry for more? teste
-
-1. Style your application with flexbox, or [Bootstrap!](https://getbootstrap.com/docs/4.1/getting-started/introduction/), a CSS library created by Twitter to make using the [960px grid system](https://960.gs/demo.html) a little easier. Or there's a substantially more lightweight 960px-grid-system-based answer to Bootstrap called [Skeleton](http://getskeleton.com/). You could also jazz up your app by adding some hand-rolled flourishes with CSS animations, and/or some sweet client-side jQuery and/or ....??? u pick???.....!
-
-2. Learn more about Pseudo Selectors to become a CSS Genius
-  - [pseudo selector links](https://www.youtube.com/watch?v=YMZGPqNDn_s&list=PLdnONIhPScST0Vy4LrIZiYKpFNoxgyH7J&index=17) ~ 5 minutes
-  - [pseudo selector children](https://www.youtube.com/watch?v=tMCahu7H-fA&list=PLdnONIhPScST0Vy4LrIZiYKpFNoxgyH7J&index=18) ~ 4 minutes
-  - [pseudo selector n-th child](https://www.youtube.com/watch?v=yFmwjX9oGt8&list=PLdnONIhPScST0Vy4LrIZiYKpFNoxgyH7J&index=19) ~ 3 minutes
-  - [pseudo selector sibling status and `not()`](https://www.youtube.com/watch?v=XyXUjEP9m-8&list=PLdnONIhPScST0Vy4LrIZiYKpFNoxgyH7J&index=20) ~ 5 minutes
-  - a little glitchy, but [See just how deeply nerdy some people get about CSS](https://css-tricks.com/roman-empire-made-pure-css-connect-4-possible/)
-
-3. Sign up for [Code Wars](https://www.codewars.com/) and/or [HackerRank](https://www.hackerrank.com/) and/or [Project Euler](https://projecteuler.net/) and try out a challenge (or a few!) in order to keep honing your JavaScript skills! These are the same types of questions people ask in interview coding challenges.
 
 
--->
+
+## Adding data to PlayerPokemon table 
+
+The right way to do this step would be to set up somewhere in our views a form that we could create the associations between Players and Pokemons, which it would add a new record on the PlayerPokemon table.
+
+However you can take a detour this time, and just add this associations from postgress (pgAdmin)
+```sql
+INSERT INTO public."PlayerPokemons"
+	(id, "playerId", "pokemonId", "createdAt", "updatedAt")
+VALUES 
+	(default, 1, 1, default, default),
+	(default, 2, 3, default, default),
+	(default, 1, 3, default, default),
+	(default, 2, 2, default, default);
+```
+
+![](https://i.imgur.com/X0dNPcb.png)
+
+
+
+<br>
+
+## you should see something like this :wink:
+![](https://i.imgur.com/70rxDZd.png)
